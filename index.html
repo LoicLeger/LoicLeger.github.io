@@ -926,16 +926,15 @@
     }
 
     const statObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const nums = e.target.querySelectorAll('.stat-num');
-          nums[0] && animateCounter(nums[0], 3, '+');
-          nums[1] && animateCounter(nums[1], 12, '+');
-          nums[2] && animateCounter(nums[2], 15, '+');
-          statObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.stat-num');
+      nums[0] && animateCounter(nums[0], 1, '+');
+      // nums[1] = ∞, on le laisse tel quel dans le HTML
+      statObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
 
     const statsEl = document.querySelector('.stats');
     if (statsEl) statObs.observe(statsEl);
