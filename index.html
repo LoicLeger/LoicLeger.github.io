@@ -801,43 +801,90 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <p class="section-label">Contact</p>
-    <h2 class="section-title reveal">Travaillons ensemble.</h2>
-    <div class="contact-inner">
-      <div class="contact-text reveal">
-        <p>Disponible pour un <strong>stage non rémunéré du 18 mai au 6 juillet 2026</strong>, et ouvert à une alternance ou un CDI par la suite. N'hésitez pas à me contacter pour échanger sur une opportunité.</p>
-        <div class="contact-links">
-          <a href="mailto:lgr.loic@gmail.com" class="contact-link-item">
-            <span class="contact-icon">✉</span>
-            lgr.loic@gmail.com
-          </a>
-          <a href="https://www.linkedin.com/in/loicleger" target="_blank" class="contact-link-item">
-            <span class="contact-icon">in</span>
-            linkedin.com/in/Loïc LEGER
-          </a>
-          <a href="https://github.com/Loicleger" target="_blank" class="contact-link-item">
-            <span class="contact-icon">⌥</span>
-            github.com/Loicleger
-          </a>
-        </div>
-      </div>
-      <div class="contact-form reveal">
-        <div class="form-group">
-          <label>Nom</label>
-          <input type="text" placeholder="Votre nom">
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="votre@email.com">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Décrivez votre projet ou votre demande..."></textarea>
-        </div>
-        <button class="btn btn-primary" style="align-self:flex-start;" onclick="alert('Message envoyé ! (connectez ce formulaire à un service comme Formspree)')">Envoyer →</button>
+  <p class="section-label">Contact</p>
+  <h2 class="section-title reveal">Travaillons ensemble.</h2>
+  <div class="contact-inner">
+    <div class="contact-text reveal">
+      <p>Disponible pour un <strong>stage non rémunéré du 18 mai au 6 juillet 2026</strong>, et ouvert à une alternance ou un CDI par la suite. N'hésitez pas à me contacter pour échanger sur une opportunité.</p>
+      <div class="contact-links">
+        <a href="mailto:lgr.loic@gmail.com" class="contact-link-item">
+          <span class="contact-icon">✉</span>
+          lgr.loic@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/loicleger" target="_blank" class="contact-link-item">
+          <span class="contact-icon">in</span>
+          linkedin.com/in/Loïc LEGER
+        </a>
+        <a href="https://github.com/Loicleger" target="_blank" class="contact-link-item">
+          <span class="contact-icon">⌥</span>
+          github.com/Loicleger
+        </a>
       </div>
     </div>
-  </section>
+
+    <form
+      class="contact-form reveal"
+      action="https://formspree.io/f/VOTRE_ID"
+      method="POST"
+      id="contact-form"
+    >
+      <!-- Redirection après envoi -->
+      <input type="hidden" name="_next" value="https://VOTRE-SITE.github.io/#contact">
+      <!-- Sujet de l'email reçu -->
+      <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio">
+
+      <div class="form-group">
+        <label for="name">Nom</label>
+        <input type="text" id="name" name="name" placeholder="Votre nom" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Décrivez votre projet ou votre demande..." required></textarea>
+      </div>
+
+      <!-- Message de succès (caché par défaut) -->
+      <p id="form-success" style="display:none; color: green;">
+        ✅ Message envoyé avec succès ! Je vous répondrai rapidement.
+      </p>
+      <p id="form-error" style="display:none; color: red;">
+        ❌ Une erreur est survenue. Veuillez réessayer.
+      </p>
+
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
+        Envoyer →
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('form-success').style.display = 'block';
+        document.getElementById('form-error').style.display = 'none';
+        form.reset();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      document.getElementById('form-error').style.display = 'block';
+      document.getElementById('form-success').style.display = 'none';
+    }
+  });
+</script>
 
   <!-- FOOTER -->
   <footer>
