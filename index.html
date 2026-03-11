@@ -97,7 +97,18 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      /* FIX: centrage + max-width pour éviter le vide sur grands écrans */
       padding: 0 10vw;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Wrapper pour que le hero prenne toute la largeur mais centre le contenu */
+    #hero-wrapper {
+      min-height: 100vh;
       position: relative;
       overflow: hidden;
     }
@@ -140,7 +151,7 @@
     }
 
     .hero-sub {
-      max-width: 480px;
+      max-width: 580px;
       font-size: 1rem;
       color: var(--muted);
       line-height: 1.8;
@@ -224,6 +235,12 @@
     /* ── SECTIONS ── */
     section {
       padding: 8rem 10vw;
+    }
+
+    /* FIX: max-width + centrage pour les sections principales */
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .section-label {
@@ -316,17 +333,23 @@
       margin-bottom: 2rem;
     }
 
+    /* ── TIMELINE FIX ── */
     .timeline {
       position: relative;
-      padding-left: 1.5rem;
+      /* FIX: padding-left = rayon du point (7px/2) + espace visuel */
+      padding-left: 1.8rem;
     }
 
     .timeline::before {
       content: '';
       position: absolute;
-      left: 0; top: 6px; bottom: 0;
+      /* FIX: centré sur les dots — left = (padding-left - 1px) / 2 centré sur le point */
+      left: calc(0.45rem - 0.5px); /* centre de la barre aligné sur le centre des dots */
+      /* FIX: top part — commence exactement au centre du premier dot */
+      top: 5px;
+      bottom: 5px;
       width: 1px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
+      background: linear-gradient(to bottom, var(--accent) 0%, var(--accent) 85%, transparent 100%);
     }
 
     .timeline-item {
@@ -334,11 +357,16 @@
       margin-bottom: 2.5rem;
     }
 
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
     .timeline-item::before {
       content: '';
       position: absolute;
-      left: -1.5rem;
-      top: 6px;
+      /* FIX: centré horizontalement sur la barre */
+      left: calc(-1.8rem + 0.45rem - 3.5px); /* centre du dot = centre de la barre */
+      top: 7px;
       width: 7px;
       height: 7px;
       border-radius: 50%;
@@ -402,13 +430,14 @@
       gap: 0.5rem;
     }
 
+    /* FIX: tags un peu plus lisibles — couleur légèrement plus claire + taille augmentée */
     .tag {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.8rem;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 2px;
-      color: var(--muted);
+      color: #a09890;
       transition: all 0.2s;
     }
 
@@ -449,7 +478,6 @@
     }
 
     .project-item:last-child { border-bottom: none; }
-
     .project-item:hover { background: rgba(200,169,110,0.04); }
 
     .project-num {
@@ -598,9 +626,10 @@
     .form-group textarea { min-height: 130px; }
 
     /* ── FOOTER ── */
+    /* FIX: footer revu — plus propre, liens corrects */
     footer {
       border-top: 1px solid var(--border);
-      padding: 2rem 10vw;
+      padding: 2.5rem 10vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -609,13 +638,40 @@
       letter-spacing: 0.06em;
     }
 
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .footer-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
     footer a {
       color: var(--muted);
       text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
       transition: color 0.2s;
     }
 
     footer a:hover { color: var(--accent); }
+
+    .footer-sep {
+      color: var(--border);
+    }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
@@ -640,6 +696,7 @@
       .project-item { grid-template-columns: 1fr; }
       .project-links { flex-direction: row; align-items: center; }
       .nav-links { display: none; }
+      footer { flex-direction: column; gap: 1.5rem; text-align: center; }
     }
   </style>
 </head>
@@ -655,246 +712,256 @@
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-bg-line"></div>
-    <p class="hero-eyebrow">Disponible · Fullstack Developer</p>
-    <h1 class="hero-title">Hello, I'm<br><em>Loïc LEGER</em></h1>
-    <p class="hero-sub">
-      Mon parcours a commencé dans le social : écouter, comprendre, trouver des solutions pour les autres. En découvrant le développement web, j'ai reconnu quelque chose de familier, la même logique, la même rigueur, le même goût du travail en équipe.
-      J'ai plongé dans cet univers avec curiosité et méthode, apprenant à construire des interfaces, à structurer un projet, à collaborer avec des outils que les équipes utilisent au quotidien. Chaque ligne de code écrite est une nouvelle preuve que ce choix était le bon.
-      Aujourd'hui, je construis une nouvelle carrière avec la même conviction, et beaucoup d'enthousiasme pour la suite.
-    </p>
-    <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">Voir mes projets</a>
-      <a href="#contact" class="btn btn-ghost">Me contacter</a>
-    </div>
-    <div class="scroll-indicator">
-      <span class="scroll-line"></span>
-      Scroll
-    </div>
-  </section>
+  <!-- HERO (wrapper pour fond plein, contenu centré) -->
+  <div id="hero-wrapper">
+    <section id="hero">
+      <div class="hero-bg-line"></div>
+      <p class="hero-eyebrow">Disponible · Fullstack Developer</p>
+      <h1 class="hero-title">Hello, I'm<br><em>Loïc LEGER</em></h1>
+      <p class="hero-sub">
+        Mon parcours a commencé dans le social : écouter, comprendre, trouver des solutions pour les autres. En découvrant le développement web, j'ai reconnu quelque chose de familier, la même logique, la même rigueur, le même goût du travail en équipe.
+        J'ai plongé dans cet univers avec curiosité et méthode, apprenant à construire des interfaces, à structurer un projet, à collaborer avec des outils que les équipes utilisent au quotidien. Chaque ligne de code écrite est une nouvelle preuve que ce choix était le bon.
+        Aujourd'hui, je construis une nouvelle carrière avec la même conviction, et beaucoup d'enthousiasme pour la suite.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+        <a href="#contact" class="btn btn-ghost">Me contacter</a>
+      </div>
+      <div class="scroll-indicator">
+        <span class="scroll-line"></span>
+        Scroll
+      </div>
+    </section>
+  </div>
 
   <!-- ABOUT -->
   <section id="about">
-    <div class="about-grid">
-      <div class="about-text">
-        <p class="section-label">À propos</p>
-        <h2 class="section-title">Un parcours atypique,<br>deux mondes.</h2>
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-label">À propos</p>
+          <h2 class="section-title">Un parcours atypique,<br>deux mondes.</h2>
 
-<p>Mon parcours dans le secteur social m'a forgé une vraie capacité d'écoute, d'analyse et d'adaptation. En reconversion vers le développement web, je retrouve ces mêmes valeurs dans le code : comprendre un problème, construire une solution concrète, collaborer avec une équipe. Attiré par la logique et la rigueur du métier, je construis aujourd'hui avec conviction les bases d'une nouvelle carrière.</p>
+          <p>Mon parcours dans le secteur social m'a forgé une vraie capacité d'écoute, d'analyse et d'adaptation. En reconversion vers le développement web, je retrouve ces mêmes valeurs dans le code : comprendre un problème, construire une solution concrète, collaborer avec une équipe. Attiré par la logique et la rigueur du métier, je construis aujourd'hui avec conviction les bases d'une nouvelle carrière.</p>
 
-<p>Actuellement en formation <strong>Concepteur Développeur d'Applications</strong> chez <strong>O'Clock</strong>, je monte en compétences sur des technos modernes comme <strong>Node.js, Svelte ou PostgreSQL</strong>. J'ai une préférence pour le back-end, mais je cultive volontairement les deux facettes du métier pour devenir un développeur complet et polyvalent.</p>
+          <p>Actuellement en formation <strong>Concepteur Développeur d'Applications</strong> chez <strong>O'Clock</strong>, je monte en compétences sur des technos modernes comme <strong>Node.js, Svelte ou PostgreSQL</strong>. J'ai une préférence pour le back-end, mais je cultive volontairement les deux facettes du métier pour devenir un développeur complet et polyvalent.</p>
 
-<p>Aujourd'hui à la recherche d'un <strong>stage</strong>, je suis également ouvert à une <strong>alternance</strong> pour continuer à apprendre en conditions réelles, au sein d'une équipe qui partage le goût du travail bien fait.</p>
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-num"> 1 </div>
-            <div class="stat-label">An d'expérience</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num"> ∞ </div>
-            <div class="stat-label">Curiosité</div>
+          <p>Aujourd'hui à la recherche d'un <strong>stage</strong>, je suis également ouvert à une <strong>alternance</strong> pour continuer à apprendre en conditions réelles, au sein d'une équipe qui partage le goût du travail bien fait.</p>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-num">1</div>
+              <div class="stat-label">An d'expérience</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">∞</div>
+              <div class="stat-label">Curiosité</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="about-aside reveal">
-        <h3>Mon parcours</h3>
-<div class="timeline">
-  <div class="timeline-item">
-    <div class="timeline-date">2025 — Aujourd'hui</div>
-    <div class="timeline-role">Développeur Web Full-Stack</div>
-    <div class="timeline-company">École O'Clock · TP CDA Niveau 6 (Bac+3/4)</div>
-  </div>
-  <div class="timeline-item">
-    <div class="timeline-date">2023 — Aujourd'hui</div>
-    <div class="timeline-role">Animateur Socio-éducatif</div>
-    <div class="timeline-company">CFA BTP Brétigny sur Orge</div>
-  </div>
-  <div class="timeline-item">
-    <div class="timeline-date">2019 — 2023</div>
-    <div class="timeline-role">Directeur Périscolaire et Jeunesse</div>
-    <div class="timeline-company">Collectivités territoriales / Vacances pour Tous</div>
-  </div>
-  <div class="timeline-item">
-    <div class="timeline-date">2015 — 2018</div>
-    <div class="timeline-role">Animateur Périscolaire et Jeunesse</div>
-    <div class="timeline-company">Mairie de St Pierre du Perray</div>
-  </div>
-  <div class="timeline-item">
-    <div class="timeline-date">2019</div>
-    <div class="timeline-role">BPJEPS Loisirs Tous Publics (Niveau IV)</div>
-    <div class="timeline-company">École Com-Tech</div>
-  </div>
-</div>
+        <div class="about-aside reveal">
+          <h3>Mon parcours</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">2025 — Aujourd'hui</div>
+              <div class="timeline-role">Développeur Web Full-Stack</div>
+              <div class="timeline-company">École O'Clock · TP CDA Niveau 6 (Bac+3/4)</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2023 — Aujourd'hui</div>
+              <div class="timeline-role">Animateur Socio-éducatif</div>
+              <div class="timeline-company">CFA BTP Brétigny sur Orge</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2019 — 2023</div>
+              <div class="timeline-role">Directeur Périscolaire et Jeunesse</div>
+              <div class="timeline-company">Collectivités territoriales / Vacances pour Tous</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2015 — 2018</div>
+              <div class="timeline-role">Animateur Périscolaire et Jeunesse</div>
+              <div class="timeline-company">Mairie de St Pierre du Perray</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2019</div>
+              <div class="timeline-role">BPJEPS Loisirs Tous Publics (Niveau IV)</div>
+              <div class="timeline-company">École Com-Tech</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- SKILLS -->
   <section id="skills">
-  <p class="section-label">Compétences</p>
-  <h2 class="section-title reveal">Ce que je maîtrise.</h2>
-  <div class="skills-grid reveal">
-    <div class="skill-card">
-      <h3>Frontend</h3>
-      <div class="skill-tags">
-        <span class="tag">HTML5</span>
-        <span class="tag">CSS3</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">TypeScript</span>
-        <span class="tag">Svelte</span>
-        <span class="tag">Vite</span>
+    <div class="section-inner">
+      <p class="section-label">Compétences</p>
+      <h2 class="section-title reveal">Ce que je maîtrise.</h2>
+      <div class="skills-grid reveal">
+        <div class="skill-card">
+          <h3>Frontend</h3>
+          <div class="skill-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Svelte</span>
+            <span class="tag">Vite</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Backend</h3>
+          <div class="skill-tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">Express</span>
+            <span class="tag">REST API</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Base de données</h3>
+          <div class="skill-tags">
+            <span class="tag">PostgreSQL</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>DevOps & Outils</h3>
+          <div class="skill-tags">
+            <span class="tag">Docker</span>
+            <span class="tag">Git / GitHub</span>
+            <span class="tag">Linux (Ubuntu)</span>
+            <span class="tag">Windows</span>
+            <span class="tag">VS Code</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Méthodologie</h3>
+          <div class="skill-tags">
+            <span class="tag">Approche Agile</span>
+            <span class="tag">Git Flow</span>
+            <span class="tag">MVC</span>
+            <span class="tag">Résolution de problèmes</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Soft Skills</h3>
+          <div class="skill-tags">
+            <span class="tag">Capacité d'adaptation</span>
+            <span class="tag">Gestion d'équipe</span>
+            <span class="tag">Force d'écoute</span>
+            <span class="tag">Autonomie</span>
+            <span class="tag">Gestion des responsabilités</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="skill-card">
-      <h3>Backend</h3>
-      <div class="skill-tags">
-        <span class="tag">Node.js</span>
-        <span class="tag">Express</span>
-        <span class="tag">REST API</span>
-        <span class="tag">SQL</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <h3>Base de données</h3>
-      <div class="skill-tags">
-        <span class="tag">PostgreSQL</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <h3>DevOps & Outils</h3>
-      <div class="skill-tags">
-        <span class="tag">Docker</span>
-        <span class="tag">Git / GitHub</span>
-        <span class="tag">Linux (Ubuntu)</span>
-        <span class="tag">Windows</span>
-        <span class="tag">VS Code</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <h3>Méthodologie</h3>
-      <div class="skill-tags">
-        <span class="tag">Approche Agile</span>
-        <span class="tag">Git Flow</span>
-        <span class="tag">MVC</span>
-        <span class="tag">Résolution de problèmes</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <h3>Soft Skills</h3>
-      <div class="skill-tags">
-        <span class="tag">Capacité d'adaptation</span>
-        <span class="tag">Gestion d'équipe</span>
-        <span class="tag">Force d'écoute</span>
-        <span class="tag">Autonomie</span>
-        <span class="tag">Gestion des responsabilités</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- PROJECTS TO DO -->
-  
+  </section>
 
   <!-- CONTACT -->
   <section id="contact">
-  <p class="section-label">Contact</p>
-  <h2 class="section-title reveal">Travaillons ensemble.</h2>
-  <div class="contact-inner">
-    <div class="contact-text reveal">
-      <p>Disponible pour un <strong>stage non rémunéré du 18 mai au 6 juillet 2026</strong>, et ouvert à une alternance ou un CDI par la suite. N'hésitez pas à me contacter pour échanger sur une opportunité.</p>
-      <div class="contact-links">
-        <a href="mailto:lgr.loic@gmail.com" class="contact-link-item">
-          <span class="contact-icon">✉</span>
-          lgr.loic@gmail.com
-        </a>
-        <a href="https://www.linkedin.com/in/loicleger" target="_blank" class="contact-link-item">
-          <span class="contact-icon">in</span>
-          linkedin.com/in/Loïc LEGER
-        </a>
-        <a href="https://github.com/Loicleger" target="_blank" class="contact-link-item">
-          <span class="contact-icon">⌥</span>
-          github.com/Loicleger
-        </a>
+    <div class="section-inner">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title reveal">Travaillons ensemble.</h2>
+      <div class="contact-inner">
+        <div class="contact-text reveal">
+          <p>Disponible pour un <strong>stage non rémunéré du 18 mai au 6 juillet 2026</strong>, et ouvert à une alternance ou un CDI par la suite. N'hésitez pas à me contacter pour échanger sur une opportunité.</p>
+          <div class="contact-links">
+            <a href="mailto:lgr.loic@gmail.com" class="contact-link-item">
+              <span class="contact-icon">✉</span>
+              lgr.loic@gmail.com
+            </a>
+            <!-- FIX: LinkedIn — remplace YOUR_LINKEDIN_URL par ton vrai profil quand tu es prêt -->
+            <a href="https://www.linkedin.com/in/YOUR_LINKEDIN_URL" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+              <span class="contact-icon">in</span>
+              linkedin.com/in/Loïc LEGER
+            </a>
+            <a href="https://github.com/Loicleger" target="_blank" rel="noopener noreferrer" class="contact-link-item">
+              <span class="contact-icon">⌥</span>
+              github.com/Loicleger
+            </a>
+          </div>
+        </div>
+
+        <form
+          class="contact-form reveal"
+          action="https://formspree.io/f/mkoqjznl"
+          method="POST"
+          id="contact-form"
+        >
+          <input type="hidden" name="_next" value="https://LoicLeger.github.io/#contact">
+          <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio">
+
+          <div class="form-group">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Décrivez votre projet ou votre demande..." required></textarea>
+          </div>
+
+          <p id="form-success" style="display:none; color: #6dba8a; font-size:0.88rem;">
+            ✅ Message envoyé avec succès ! Je vous répondrai rapidement.
+          </p>
+          <p id="form-error" style="display:none; color: #d97a7a; font-size:0.88rem;">
+            ❌ Une erreur est survenue. Veuillez réessayer.
+          </p>
+
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
+            Envoyer →
+          </button>
+        </form>
       </div>
     </div>
+  </section>
 
-    <form
-      class="contact-form reveal"
-      action="https://formspree.io/f/mkoqjznl"
-      method="POST"
-      id="contact-form"
-    >
-      <!-- Redirection après envoi -->
-      <input type="hidden" name="_next" value="https://LoicLeger.github.io/#contact">
-      <!-- Sujet de l'email reçu -->
-      <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio">
-
-      <div class="form-group">
-        <label for="name">Nom</label>
-        <input type="text" id="name" name="name" placeholder="Votre nom" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="votre@email.com" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" placeholder="Décrivez votre projet ou votre demande..." required></textarea>
-      </div>
-
-      <!-- Message de succès (caché par défaut) -->
-      <p id="form-success" style="display:none; color: green;">
-        ✅ Message envoyé avec succès ! Je vous répondrai rapidement.
-      </p>
-      <p id="form-error" style="display:none; color: red;">
-        ❌ Une erreur est survenue. Veuillez réessayer.
-      </p>
-
-      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
-        Envoyer →
-      </button>
-    </form>
-  </div>
-</section>
-
-<script>
-  const form = document.getElementById('contact-form');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const data = new FormData(form);
-    try {
-      const res = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        document.getElementById('form-success').style.display = 'block';
-        document.getElementById('form-error').style.display = 'none';
-        form.reset();
-      } else {
-        throw new Error();
-      }
-    } catch {
-      document.getElementById('form-error').style.display = 'block';
-      document.getElementById('form-success').style.display = 'none';
-    }
-  });
-</script>
-
-  <!-- FOOTER -->
+  <!-- FIX: Footer revu — structure propre, placeholder LinkedIn -->
   <footer>
-    <span>Fait avec passion · <strong style="color:var(--accent)">Loïc LEGER</strong> · 2026</span>
-    <span>
-      <a href="https://github.com/Loicleger" target="_blank">GitHub</a> ·
-      <a href="https://www.linkedin.com/in/loicleger" target="_blank">LinkedIn</a>
-    </span>
+    <div class="footer-left">
+      <span>© 2026</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-name">Loïc LEGER</span>
+      <span class="footer-sep">·</span>
+      <span>Fait avec passion</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/Loicleger" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="footer-sep">·</span>
+      <!-- FIX: LinkedIn footer — même placeholder à remplacer -->
+      <a href="https://www.linkedin.com/in/YOUR_LINKEDIN_URL" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
   </footer>
 
   <script>
+    // Form submission
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          document.getElementById('form-success').style.display = 'block';
+          document.getElementById('form-error').style.display = 'none';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        document.getElementById('form-error').style.display = 'block';
+        document.getElementById('form-success').style.display = 'none';
+      }
+    });
+
     // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver((entries) => {
@@ -913,7 +980,7 @@
       nav.style.padding = window.scrollY > 60 ? '1rem 5vw' : '1.4rem 5vw';
     });
 
-    // Animate counters
+    // Animate counter
     function animateCounter(el, target, suffix='') {
       let current = 0;
       const step = Math.ceil(target / 40);
@@ -925,15 +992,14 @@
     }
 
     const statObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const nums = e.target.querySelectorAll('.stat-num');
-      nums[0] && animateCounter(nums[0], 1, '+');
-      // nums[1] = ∞, on le laisse tel quel dans le HTML
-      statObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.5 });
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const nums = e.target.querySelectorAll('.stat-num');
+          nums[0] && animateCounter(nums[0], 1, '+');
+          statObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
 
     const statsEl = document.querySelector('.stats');
     if (statsEl) statObs.observe(statsEl);
