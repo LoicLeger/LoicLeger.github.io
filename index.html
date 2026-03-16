@@ -754,13 +754,15 @@
           <p>Mon parcours dans le secteur social m'a forgé une vraie capacité d'écoute, d'analyse et d'adaptation. En reconversion vers le développement web, je retrouve ces mêmes valeurs dans le code : comprendre un problème, construire une solution concrète, collaborer avec une équipe. Attiré par la logique et la rigueur du métier, je construis aujourd'hui avec conviction les bases d'une nouvelle carrière.</p>
           <p>Actuellement en formation <strong>Concepteur Développeur d'Applications</strong> chez <strong>O'Clock</strong>, je monte en compétences sur des technos modernes comme <strong>Node.js, Svelte ou PostgreSQL</strong>. J'ai une préférence pour le back-end, mais je cultive volontairement les deux facettes du métier pour devenir un développeur complet et polyvalent.</p>
           <p>Aujourd'hui à la recherche d'un <strong>stage non rémunéré du 18 mai au 6 juillet 2026</strong>, j'envisage ensuite d'intégrer un <strong>Bachelor Coordinateur de Projets Informatiques – Option Applications Dev en alternance</strong>, pour continuer à apprendre en conditions réelles au sein d'une équipe qui partage le goût du travail bien fait.</p>
-          <div class="stat">
-            <div class="stat-num">9</div>
-            <div class="stat-label">Technos maîtrisées</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">10</div>
-            <div class="stat-label">Ans d'expérience pro</div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-num">9</div>
+              <div class="stat-label">Technos maîtrisées</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">10</div>
+              <div class="stat-label">Ans d'expérience pro</div>
+            </div>
           </div>
         </div>
 
@@ -1000,14 +1002,15 @@
     }
 
     const statObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const nums = e.target.querySelectorAll('.stat-num');
-          nums[0] && animateCounter(nums[0], 1, '+');
-          statObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.stat-num');
+      nums[0] && animateCounter(nums[0], 9);
+      nums[1] && animateCounter(nums[1], 10, ' ans');
+      statObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
 
     const statsEl = document.querySelector('.stats');
     if (statsEl) statObs.observe(statsEl);
